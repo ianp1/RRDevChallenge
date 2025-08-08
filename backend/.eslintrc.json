@@ -1,0 +1,16 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      // Relative zum Verzeichnis der .eslintrc.json:
+      "project": ["./tsconfig.json"]
+    },
+    "extends": "./node_modules/gts/",
+    "ignorePatterns": [
+      "node_modules/",
+      "build/",
+      "jest.config.js"
+    ],
+    "plugins": [
+    ]
+  }
+  
