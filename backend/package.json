@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "db-vendo-client": "^6.9.0",
     "express": "^5.1.0",
+    "hafas-client": "^6.3.5",
     "moment": "^2.30.1"
   },
   "devDependencies": {

@@ -1,13 +1,14 @@
-import { Request, Response, NextFunction } from "express";
-import loggingService from "../logging/logging.service";
+import {Request, Response, NextFunction} from 'express';
+import loggingService from '../logging/logging.service';
 
 class ExpressErrorHandler {
-    handleError(err:Error, req:Request, res:Response, next:NextFunction) {
-        loggingService.log(`Error when processing request ${ req.url }`, "ERROR" );
-        loggingService.log(err, "ERROR");
+  handleError(err: Error, req: Request, res: Response, next: NextFunction) {
+    loggingService.log(`Error when processing request ${req.url}`, 'ERROR');
+    loggingService.log(err, 'ERROR');
 
-        res.status(500).send();
-    }
+    res.status(500).send();
+    next();
+  }
 }
 
 export default new ExpressErrorHandler();
