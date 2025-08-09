@@ -6,7 +6,7 @@ import * as dbNavProfile from 'db-vendo-client/p/dbnav/index.js';
 import * as withCache from 'cached-hafas-client';
 // @ts-ignore
 import {createInMemoryStore} from 'cached-hafas-client/stores/in-memory'
-import { Departures } from 'hafas-client';
+import { Alternative, ArrivalDeparture, Departures } from 'hafas-client';
 
 const userAgent = 'https://github.com/ianp1/RRDevChallenge';
 
@@ -26,14 +26,40 @@ class DBService {
             stops: true,
             addresses: false,
             poi: false,
-            entrances: false,
+            entrances: false
         });
     }
 
     getDepartures(platformId:string, startTime: Date, searchDurationMinutes:number): Promise<Departures[]> {
-        return this.dbClient.departures(platformId, {
+        let departures = this.dbClient.departures(platformId, {
             when:startTime,
-            duration: searchDurationMinutes
+            duration: searchDurationMinutes,
+            products: {
+                tram: false,
+                suburban: false,
+                bus: false,
+                ferry: false,
+                subway: false,
+                taxi: false
+            }
+        });
+
+        //For some reason, the API still returns some Bus departures. We filter those here, before sending them to frontend
+        return departures.then((departures:Departures) => {
+            departures.departures = departures.departures.filter((departure:Alternative) => {
+                if (departure.line) {
+                    if (departure.line.productName === 'Bus') {
+                        return false;
+                    }
+                    if (departure.line.product === 'bus') {
+                        return false;
+                    }
+                }
+    
+                return true;
+            });
+
+            return departures;
         });
     } 
 }
