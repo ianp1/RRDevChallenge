@@ -29,6 +29,13 @@ class PlatformController {
         if (req.query['duration'] && typeof req.query['duration'] === 'string') {
             duration = Number.parseInt(req.query['duration']);
         }
+        if (duration > 720 || duration < 0) {
+            res.status(400).json({
+                error: "Invalid duration",
+                message: "Please provide a value between 0 and 720"
+            });
+            return;
+        }
 
         let departures = await dbService.getDepartures(platformId, startTime, duration);
 
@@ -46,6 +53,13 @@ class PlatformController {
         let duration = 30;
         if (req.query['duration'] && typeof req.query['duration'] === 'string') {
             duration = Number.parseInt(req.query['duration']);
+        }
+        if (duration > 720 || duration < 0) {
+            res.status(400).json({
+                error: "Invalid duration",
+                message: "Please provide a value between 0 and 720"
+            });
+            return;
         }
 
         let arrivals = await dbService.getArrivals(platformId, startTime, duration);

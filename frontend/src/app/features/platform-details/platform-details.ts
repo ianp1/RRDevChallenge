@@ -12,6 +12,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Platform } from '../../models/platform.model';
 import { DatePipe } from '@angular/common';
 import { Arrival } from '../../models/arrival.model';
+import { debouncedSignal } from '../../utility/debouncedSignal';
 
 @Component({
   selector: 'app-platform-details',
@@ -36,6 +37,8 @@ export class PlatformDetails {
   platformId = signal('');
   platformData:Platform | undefined = undefined;
 
+  duration = signal(60);
+  debouncedDuration = debouncedSignal(this.duration, 500);
 
   departureData: Departure[] = [];
   arrivalData: Arrival[] = [];
@@ -60,20 +63,22 @@ export class PlatformDetails {
     });
 
     effect(() => {
-      this.platformService.searchForPlatformByName(this.platformId()).subscribe(platforms => {
-        //Since we are searching by id, we should only receive one result
-        // -> Ignore others
-        if (platforms.length >= 1) {
-          this.platformData = platforms[0];
-        }
-      });
-      this.platformService.getDepartures(this.platformId()).subscribe(departures => {
-        console.log(departures);
-        this.departureData = departures;
-      });
-      this.platformService.getArrivals(this.platformId()).subscribe(arrivals => {
-        this.arrivalData = arrivals;
-      });
+      if (this.debouncedDuration() <= 720 && this.debouncedDuration() > 0) {
+        this.platformService.searchForPlatformByName(this.platformId()).subscribe(platforms => {
+          //Since we are searching by id, we should only receive one result
+          // -> Ignore others
+          if (platforms.length >= 1) {
+            this.platformData = platforms[0];
+          }
+        });
+        this.platformService.getDepartures(this.platformId(), this.debouncedDuration()).subscribe(departures => {
+          console.log(departures);
+          this.departureData = departures;
+        });
+        this.platformService.getArrivals(this.platformId(), this.debouncedDuration()).subscribe(arrivals => {
+          this.arrivalData = arrivals;
+        });
+      }
     })
   }
 }

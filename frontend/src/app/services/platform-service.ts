@@ -45,15 +45,21 @@ export class PlatformService {
     );
   }
 
-  getDepartures(platformId: string):Observable<Departure[]> {
-    
-    return this.http.get<DepartureResponse>(`http://localhost:3000/platforms/${platformId}/Departures?startTime=1754759689&duration=60`).pipe(
+  getDepartures(platformId: string, duration = 60, startDate = new Date()):Observable<Departure[]> {
+    let startTime = Math.floor(startDate.getTime() / 1000.0);
+    return this.http.get<DepartureResponse>(`http://localhost:3000/platforms/${platformId}/Departures?startTime=${startTime}&duration=${duration}`).pipe(
       map(responseValue => {
         if (Array.isArray(responseValue['departures'])) {
           return responseValue.departures.map(
             departureResponseValue => {
+              try {
+                return DepartureValidator.parse(departureResponseValue);  
+              } catch (e) {
+                console.log(departureResponseValue);
+                console.log(e);
+              }
 
-              return DepartureValidator.parse(departureResponseValue);  
+              return {} as Departure;
             }
           );
         }
@@ -64,8 +70,10 @@ export class PlatformService {
     );
   }
 
-  getArrivals(platformId: string): Observable<Arrival[]> {
-    return this.http.get<ArrivalResponse>(`http://localhost:3000/platforms/${platformId}/Arrivals?startTime=1754759689&duration=60`).pipe(
+  getArrivals(platformId: string, duration = 60, startDate = new Date()): Observable<Arrival[]> {
+    let startTime = Math.floor(startDate.getTime() / 1000.0);
+    
+    return this.http.get<ArrivalResponse>(`http://localhost:3000/platforms/${platformId}/Arrivals?startTime=${startTime}&duration=${duration}`).pipe(
       map(responseValue => {
         if (Array.isArray(responseValue['arrivals'])) {
           console.log(responseValue['arrivals']);

@@ -1,17 +1,17 @@
 // @ts-ignore
 import {createClient, Location, Station, Stop} from 'db-vendo-client';
 // @ts-ignore
-import * as dbNavProfile from 'db-vendo-client/p/dbnav/index.js';
+import * as dbProfile from 'db-vendo-client/p/db/index.js';
 // @ts-ignore
 import * as withCache from 'cached-hafas-client';
 // @ts-ignore
 import {createInMemoryStore} from 'cached-hafas-client/stores/in-memory'
-import { Alternative, ArrivalDeparture, Arrivals, Departures } from 'hafas-client';
+import { Alternative, Arrivals, Departures } from 'hafas-client';
 
 const userAgent = 'https://github.com/ianp1/RRDevChallenge';
 
 class DBService {
-    dbClient = createClient(dbNavProfile.default.profile, userAgent);
+    dbClient = createClient(dbProfile.default.profile, userAgent);
     store = createInMemoryStore();
     cachedClient = withCache.default.createCachedHafasClient(this.dbClient, this.store);
 
@@ -57,6 +57,7 @@ class DBService {
             }
         });
 
+        console.log(searchDurationMinutes);
         //For some reason, the API still returns some Bus departures. We filter those here, before sending them to frontend
         return departures.then((departures:Departures) => {
             departures.departures = departures.departures.filter(
