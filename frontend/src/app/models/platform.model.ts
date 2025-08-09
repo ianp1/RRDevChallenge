@@ -7,13 +7,13 @@ const Location = Object({
     longitude: Number
 });
 
-const Platform = Object({
+const PlatformObj = Object({
     type: Literal('station'),
     location: Location,
     name: String,
     id: String
 });
 
-export type PlatformType = Static<typeof Platform>;
+export type Platform = Static<typeof PlatformObj> ;
 
-export {Platform as PlatformValidator};
+export {PlatformObj as PlatformValidator};
