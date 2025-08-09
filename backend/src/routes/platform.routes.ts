@@ -11,8 +11,8 @@ class PlatformRoutes {
     private setupRoutes() {
         
         this.router.get(
-            '/',
-            platformController.getPlatforms
+            '/ByName/:searchText',
+            platformController.searchPlatforms
         );
     }
 }

@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
+import dbService from "../services/db.service";
 
 class PlatformController {
-    getPlatforms(req: Request, res: Response) {
-        res.status(200).json([]);
+    async searchPlatforms(req: Request, res: Response) {
+        const stations = await dbService.searchPlatforms(req.params['searchText']);
+        res.status(200).json(stations);
     }
 }
 
