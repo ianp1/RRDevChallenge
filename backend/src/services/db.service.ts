@@ -14,16 +14,13 @@ class DBService {
     store = createInMemoryStore();
     cachedClient = withCache.default.createCachedHafasClient(this.dbClient, this.store);
 
-
     constructor() {
         
     }
-
-
     
     searchPlatforms(searchText:string): Promise<readonly (Station | Stop | Location)[]> {
         //return new Promise<readonly (Station | Stop | Location)[]>(() => {});
-        return this.dbClient.locations(searchText, undefined);
+        return this.cachedClient.locations(searchText, undefined);
     }
 }
 
