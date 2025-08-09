@@ -19,7 +19,14 @@ class DBService {
     }
     
     searchPlatforms(searchText:string): Promise<readonly (Station | Stop | Location)[]> {
-        return this.dbClient.locations(searchText, undefined);
+        //We only search for platforms, ignoring pois, addresses and entrances since there should be no departures
+        return this.dbClient.locations(searchText, {
+            results: 20,
+            stops: true,
+            addresses: false,
+            poi: false,
+            entrances: false,
+        });
     }
 }
 
