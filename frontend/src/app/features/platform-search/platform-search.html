@@ -1,12 +1,28 @@
 <mat-form-field id="platform-search">
     <mat-label>Suche nach Stationsnamen</mat-label>
-    <input matInput type="text" [(ngModel)]="searchString">
+    <input 
+        matInput 
+        type="text" 
+        [(ngModel)]="searchString"
+        [matAutocomplete]="auto"
+    >
+
+
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        @for (platform of platformData; track platform.id) {
+            <mat-option [value]="platform.name">{{platform.name}}</mat-option>
+          }
+    </mat-autocomplete>
+
+
     @if (searchString() !== '') {
         <button matSuffix matIconButton aria-label="Clear" (click)="searchString.set('')">
             <mat-icon>close</mat-icon>
         </button>
     }    
 </mat-form-field>
+
+
 <table mat-table [dataSource]="platformData">
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> 

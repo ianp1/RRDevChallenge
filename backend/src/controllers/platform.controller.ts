@@ -5,7 +5,6 @@ class PlatformController {
     async searchPlatforms(req: Request, res: Response) {
         let stations = await dbService.searchPlatforms(req.params['searchText']);
         stations = stations.filter(station => {
-            console.log(typeof station.id);
             if ((typeof station.id) !== 'string' || station.id === '') {
                 return false;
             }

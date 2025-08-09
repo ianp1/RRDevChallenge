@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { debouncedSignal } from '../../utility/debouncedSignal';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'platform-search',
@@ -17,7 +18,8 @@ import { debouncedSignal } from '../../utility/debouncedSignal';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    MatAutocompleteModule
   ],
   templateUrl: './platform-search.html',
   styleUrl: './platform-search.scss'
@@ -30,21 +32,7 @@ export class PlatformSearch {
   searchString = signal("");
   debouncedSearchString = debouncedSignal(this.searchString, 500);
   
-
-  test: Platform = {
-    type: "station",
-    location: {
-      type: "location",
-      id: "9999",
-      latitude: 123,
-      longitude: 456,
-    },
-    id: "8888",
-    name: "Lübeck"
-  }
-  platformData: Platform[] = [
-    this.test
-  ];
+  platformData: Platform[] = [];
 
 
   constructor() {
@@ -61,9 +49,5 @@ export class PlatformSearch {
   }
 
   async ngOnInit() {
-    console.log("hier");
-
-
-    this.searchString.set("test");
   }
 }

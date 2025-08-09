@@ -20,7 +20,12 @@ export class PlatformService {
             const platform = PlatformValidator.check(platformResponseValue);
 
             return platform;
-          });
+          }).filter(platform => {
+            //Filter to exclude irrelevant stations
+            // -> Stations that only include bus stops, tram stations, cab stations, etc.
+            return platform.products.nationalExpress || platform.products.national || platform.products.regionalExpress || platform.products.regional;
+          }
+          );
         }
 
         return [];
