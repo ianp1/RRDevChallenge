@@ -17,7 +17,7 @@ class PlatformController {
     res.status(200).json(stations);
   }
 
-  getArrivalDepartureQueryParams(req: Request, res: Response):{startTime:Date, duration:number} | undefined {
+  getArrivalDepartureQueryParams(req: Request, res: Response):({startTime:Date, duration:number} | undefined) {
     let startTime = new Date();
     if (req.query['startTime'] && typeof req.query['startTime'] === 'string') {
       startTime = new Date(1000 * Number.parseInt(req.query['startTime']));
@@ -35,12 +35,14 @@ class PlatformController {
       return undefined;
     }
     return {
-      startTime: new Date(),
-      duration: 10
+      startTime: startTime,
+      duration: duration
     };
   }
 
-  async getDepartures(req: Request, res: Response) {
+  //Using arrow functions to avoid this not being bound in Express.js handler function calls
+  //See https://stackoverflow.com/questions/34680450/this-is-undefined-in-expressjs-route-handler
+  getDepartures = async (req: Request, res: Response) => {
     const platformId = req.params['platformId'];
 
     let queryParams = this.getArrivalDepartureQueryParams(req, res);
@@ -57,7 +59,9 @@ class PlatformController {
     res.status(200).json(departures);
   }
 
-  async getArrivals(req: Request, res: Response) {
+  //Using arrow functions to avoid this not being bound in Express.js handler function calls
+  //See https://stackoverflow.com/questions/34680450/this-is-undefined-in-expressjs-route-handler
+  getArrivals = async (req: Request, res: Response) => {
     const platformId = req.params['platformId'];
 
     let queryParams = this.getArrivalDepartureQueryParams(req, res);
