@@ -17,15 +17,13 @@ class PlatformController {
     res.status(200).json(stations);
   }
 
-  async getDepartures(req: Request, res: Response) {
-    const platformId = req.params['platformId'];
-
+  getArrivalDepartureQueryParams(req: Request, res: Response):{startTime:Date, duration:number} | undefined {
     let startTime = new Date();
     if (req.query['startTime'] && typeof req.query['startTime'] === 'string') {
       startTime = new Date(1000 * Number.parseInt(req.query['startTime']));
     }
 
-    let duration = 30;
+    let duration = 60;
     if (req.query['duration'] && typeof req.query['duration'] === 'string') {
       duration = Number.parseInt(req.query['duration']);
     }
@@ -34,13 +32,26 @@ class PlatformController {
         error: 'Invalid duration',
         message: 'Please provide a value between 0 and 720',
       });
+      return undefined;
+    }
+    return {
+      startTime: new Date(),
+      duration: 10
+    };
+  }
+
+  async getDepartures(req: Request, res: Response) {
+    const platformId = req.params['platformId'];
+
+    let queryParams = this.getArrivalDepartureQueryParams(req, res);
+    if (queryParams === undefined) {
       return;
     }
 
     const departures = await dbService.getDepartures(
       platformId,
-      startTime,
-      duration,
+      queryParams.startTime,
+      queryParams.duration,
     );
 
     res.status(200).json(departures);
@@ -49,27 +60,15 @@ class PlatformController {
   async getArrivals(req: Request, res: Response) {
     const platformId = req.params['platformId'];
 
-    let startTime = new Date();
-    if (req.query['startTime'] && typeof req.query['startTime'] === 'string') {
-      startTime = new Date(1000 * Number.parseInt(req.query['startTime']));
-    }
-
-    let duration = 30;
-    if (req.query['duration'] && typeof req.query['duration'] === 'string') {
-      duration = Number.parseInt(req.query['duration']);
-    }
-    if (duration > 720 || duration < 0) {
-      res.status(400).json({
-        error: 'Invalid duration',
-        message: 'Please provide a value between 0 and 720',
-      });
+    let queryParams = this.getArrivalDepartureQueryParams(req, res);
+    if (queryParams === undefined) {
       return;
     }
 
     const arrivals = await dbService.getArrivals(
       platformId,
-      startTime,
-      duration,
+      queryParams.startTime,
+      queryParams.duration,
     );
 
     res.status(200).json(arrivals);
