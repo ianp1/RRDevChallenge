@@ -19,8 +19,7 @@ class DBService {
     }
     
     searchPlatforms(searchText:string): Promise<readonly (Station | Stop | Location)[]> {
-        //return new Promise<readonly (Station | Stop | Location)[]>(() => {});
-        return this.cachedClient.locations(searchText, undefined);
+        return this.dbClient.locations(searchText, undefined);
     }
 }
 
