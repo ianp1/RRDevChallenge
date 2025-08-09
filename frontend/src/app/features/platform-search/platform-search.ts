@@ -39,10 +39,10 @@ export class PlatformSearch {
 
 
   constructor() {
-    effect(async () => {
+    effect(() => {
       const searchTerm = this.debouncedSearchString();
       if (searchTerm !== "") {
-        await this.platformService.searchForPlatformByName(searchTerm).subscribe(platforms => {
+        this.platformService.searchForPlatformByName(searchTerm).subscribe(platforms => {
           this.platformData = platforms;
         });
       }
