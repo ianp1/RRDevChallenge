@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PlatformSearch } from './features/platform-search/platform-search';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -28,5 +29,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './app.scss'
 })
 export class App {
+  location:Location = inject(Location);
   protected readonly title = signal('DevChallenge');
 }
