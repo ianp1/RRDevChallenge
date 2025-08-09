@@ -51,10 +51,4 @@ export class PlatformSearch {
 
   }
 
-  async ngOnInit() {
-  }
-
-  displayStationDetails(row:Platform) {
-    console.log(row);
-  }
 }

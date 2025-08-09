@@ -72,7 +72,6 @@ export class PlatformDetails {
           }
         });
         this.platformService.getDepartures(this.platformId(), this.debouncedDuration()).subscribe(departures => {
-          console.log(departures);
           this.departureData = departures;
         });
         this.platformService.getArrivals(this.platformId(), this.debouncedDuration()).subscribe(arrivals => {

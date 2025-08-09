@@ -52,14 +52,7 @@ export class PlatformService {
         if (Array.isArray(responseValue['departures'])) {
           return responseValue.departures.map(
             departureResponseValue => {
-              try {
-                return DepartureValidator.parse(departureResponseValue);  
-              } catch (e) {
-                console.log(departureResponseValue);
-                console.log(e);
-              }
-
-              return {} as Departure;
+              return DepartureValidator.parse(departureResponseValue);  
             }
           );
         }
@@ -76,7 +69,6 @@ export class PlatformService {
     return this.http.get<ArrivalResponse>(`http://localhost:3000/platforms/${platformId}/Arrivals?startTime=${startTime}&duration=${duration}`).pipe(
       map(responseValue => {
         if (Array.isArray(responseValue['arrivals'])) {
-          console.log(responseValue['arrivals']);
           return responseValue.arrivals.map(
             arrivalsResponseValue => {
 

@@ -73,7 +73,6 @@ class DBService {
       },
     });
 
-    console.log(searchDurationMinutes);
     //For some reason, the API still returns some Bus departures. We filter those here, before sending them to frontend
     return departures.then((departures: Departures) => {
       departures.departures = departures.departures.filter(this.filterBusses);

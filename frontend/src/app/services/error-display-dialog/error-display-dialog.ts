@@ -17,7 +17,7 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, Ma
 })
 export class ErrorDisplayDialog {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {message: string, title: string}) {
-    console.log("open dialog", data);
+    
   }
 
 
