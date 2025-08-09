@@ -5,6 +5,7 @@ import { catchError, filter, map, Observable, ObservableInput, of } from 'rxjs';
 import { PlatformValidator, Platform } from '../models/platform.model';
 import { ErrorDisplayService } from './error-display-service';
 import { Departure, DepartureValidator } from '../models/departure.model';
+import { Arrival, ArrivalValidator } from '../models/arrival.model';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +46,33 @@ export class PlatformService {
   }
 
   getDepartures(platformId: string):Observable<Departure[]> {
+    
     return this.http.get<DepartureResponse>(`http://localhost:3000/platforms/${platformId}/Departures?startTime=1754759689&duration=60`).pipe(
       map(responseValue => {
         if (Array.isArray(responseValue['departures'])) {
-          console.log(responseValue['departures']);
           return responseValue.departures.map(
             departureResponseValue => {
 
               return DepartureValidator.parse(departureResponseValue);  
+            }
+          );
+        }
+      
+        return [];
+      }),
+      this.errorHandler()
+    );
+  }
+
+  getArrivals(platformId: string): Observable<Arrival[]> {
+    return this.http.get<ArrivalResponse>(`http://localhost:3000/platforms/${platformId}/Arrivals?startTime=1754759689&duration=60`).pipe(
+      map(responseValue => {
+        if (Array.isArray(responseValue['arrivals'])) {
+          console.log(responseValue['arrivals']);
+          return responseValue.arrivals.map(
+            arrivalsResponseValue => {
+
+              return ArrivalValidator.parse(arrivalsResponseValue);  
             }
           );
         }
@@ -68,3 +88,6 @@ interface DepartureResponse {
   departures: any[]
 }
 
+interface ArrivalResponse {
+  arrivals: any[]
+}

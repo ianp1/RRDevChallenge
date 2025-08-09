@@ -22,12 +22,12 @@ export class ErrorDisplayService {
       errorMessage = "Beim Abrufen der Daten vom Server ist ein Fehler aufgetreten. Die erhaltenen Daten stimmen nicht mit dem erwarteten Format überein. Eventuell sind die Versionen inkompatibel";
     } else if (error instanceof Error){
       errorTitle = "Unerwarteter Fehler";
-      errorMessage = `${error.message}
+      errorMessage = `${JSON.stringify(error.message)}
       
       Stack: ${error.stack}`;
     } else {
       errorTitle = "Unerwarteter Fehler";
-      errorMessage = error;
+      errorMessage = JSON.stringify(error);
     }
 
     console.log(errorMessage);

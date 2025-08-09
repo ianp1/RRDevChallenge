@@ -25,3 +25,4 @@ export type Departure = Parsed<typeof DepartureObj> ;
 
 
 export {DepartureObj as DepartureValidator};
+export {Line};

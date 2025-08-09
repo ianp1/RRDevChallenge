@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Platform } from '../../models/platform.model';
 import { DatePipe } from '@angular/common';
+import { Arrival } from '../../models/arrival.model';
 
 @Component({
   selector: 'app-platform-details',
@@ -37,9 +38,17 @@ export class PlatformDetails {
 
 
   departureData: Departure[] = [];
-  displayedColumns = [
+  arrivalData: Arrival[] = [];
+  displayedDepartureColumns = [
     "departureTime",
     "direction",
+    "line",
+    "station",
+    "delay"
+  ];
+  displayedArrivalColumns = [
+    "arrivalTime",
+    "provenance",
     "line",
     "station",
     "delay"
@@ -61,6 +70,9 @@ export class PlatformDetails {
       this.platformService.getDepartures(this.platformId()).subscribe(departures => {
         console.log(departures);
         this.departureData = departures;
+      });
+      this.platformService.getArrivals(this.platformId()).subscribe(arrivals => {
+        this.arrivalData = arrivals;
       });
     })
   }

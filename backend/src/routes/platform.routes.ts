@@ -19,6 +19,11 @@ class PlatformRoutes {
             '/:platformId/Departures',
             platformController.getDepartures
         )
+
+        this.router.get(
+            '/:platformId/Arrivals',
+            platformController.getArrivals
+        )
     }
 }
 
