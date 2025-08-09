@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { debouncedSignal } from '../../utility/debouncedSignal';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'platform-search',
@@ -19,7 +20,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatIconModule,
     MatButtonModule,
     FormsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    RouterLink,
+    RouterModule
   ],
   templateUrl: './platform-search.html',
   styleUrl: './platform-search.scss'
@@ -49,5 +52,9 @@ export class PlatformSearch {
   }
 
   async ngOnInit() {
+  }
+
+  displayStationDetails(row:Platform) {
+    console.log(row);
   }
 }
