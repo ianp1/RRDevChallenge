@@ -16,6 +16,24 @@ class PlatformController {
         });
         res.status(200).json(stations);
     }
+
+    async getDepartures(req: Request, res: Response) {
+        let platformId = req.params['platformId'];
+
+        let startTime = new Date();
+        if (req.query['startTime'] && typeof req.query['startTime'] === 'string') {
+            startTime = new Date(1000 * Number.parseInt(req.query['startTime']));
+        }
+        
+        let duration = 30;
+        if (req.query['duration'] && typeof req.query['duration'] === 'string') {
+            duration = Number.parseInt(req.query['duration']);
+        }
+
+        let departures = await dbService.getDepartures(platformId, startTime, duration);
+
+        res.status(200).json(departures);
+    }
 }
 
 export default new PlatformController();

@@ -14,6 +14,11 @@ class PlatformRoutes {
             '/ByName/:searchText',
             platformController.searchPlatforms
         );
+
+        this.router.get(
+            '/:platformId/Departures',
+            platformController.getDepartures
+        )
     }
 }
 

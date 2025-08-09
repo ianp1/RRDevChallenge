@@ -6,6 +6,7 @@ import * as dbNavProfile from 'db-vendo-client/p/dbnav/index.js';
 import * as withCache from 'cached-hafas-client';
 // @ts-ignore
 import {createInMemoryStore} from 'cached-hafas-client/stores/in-memory'
+import { Departures } from 'hafas-client';
 
 const userAgent = 'https://github.com/ianp1/RRDevChallenge';
 
@@ -28,6 +29,13 @@ class DBService {
             entrances: false,
         });
     }
+
+    getDepartures(platformId:string, startTime: Date, searchDurationMinutes:number): Promise<Departures[]> {
+        return this.dbClient.departures(platformId, {
+            when:startTime,
+            duration: searchDurationMinutes
+        });
+    } 
 }
 
 export default new DBService();
