@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { debouncedSignal } from '../../utility/debouncedSignal';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterLink, RouterModule } from '@angular/router';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'platform-search',
@@ -21,6 +22,7 @@ import { RouterLink, RouterModule } from '@angular/router';
     MatButtonModule,
     FormsModule,
     MatAutocompleteModule,
+    MatProgressSpinner,
     RouterLink,
     RouterModule
   ],
@@ -33,6 +35,7 @@ export class PlatformSearch {
   displayedColumns: string[] = ['name'];
 
   searchString = signal("");
+  loading = signal(false);
   debouncedSearchString = debouncedSignal(this.searchString, 500);
   
   platformData: Platform[] = [];
@@ -41,10 +44,14 @@ export class PlatformSearch {
   constructor() {
     effect(() => {
       const searchTerm = this.debouncedSearchString();
+      this.loading.set(true);
       if (searchTerm !== "") {
         this.platformService.searchForPlatformByName(searchTerm).subscribe(platforms => {
           this.platformData = platforms;
+          this.loading.set(false);
         });
+      } else {
+        this.loading.set(false);
       }
       
     });

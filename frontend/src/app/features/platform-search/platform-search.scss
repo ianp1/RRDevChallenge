@@ -1,7 +1,19 @@
 #platform-search {
-    width: 100%;
+    width: 90%;
 }
 
 tr td {
     cursor: pointer;
+}
+
+
+.spinner {
+    display: inline-block;
+    visibility: hidden;
+
+    margin-left: 25px;
+
+    &.loading {
+        visibility: visible;
+    }
 }

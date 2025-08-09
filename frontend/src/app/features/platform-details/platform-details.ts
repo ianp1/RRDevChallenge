@@ -13,6 +13,7 @@ import { Platform } from '../../models/platform.model';
 import { DatePipe } from '@angular/common';
 import { Arrival } from '../../models/arrival.model';
 import { debouncedSignal } from '../../utility/debouncedSignal';
+import { MatProgressSpinner, MatSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-platform-details',
@@ -24,6 +25,7 @@ import { debouncedSignal } from '../../utility/debouncedSignal';
     MatButtonModule,
     FormsModule,
     MatAutocompleteModule,
+    MatProgressSpinner,
     RouterModule,
     DatePipe
   ],
@@ -33,6 +35,9 @@ import { debouncedSignal } from '../../utility/debouncedSignal';
 export class PlatformDetails {
   private activatedRoute = inject(ActivatedRoute);
   platformService = inject(PlatformService);
+
+  departuresLoading = signal(false);
+  arrivalsLoading = signal(false);
 
   platformId = signal('');
   platformData:Platform | undefined = undefined;
@@ -64,6 +69,8 @@ export class PlatformDetails {
 
     effect(() => {
       if (this.debouncedDuration() <= 720 && this.debouncedDuration() > 0) {
+        this.arrivalsLoading.set(true);
+        this.departuresLoading.set(true);
         this.platformService.searchForPlatformByName(this.platformId()).subscribe(platforms => {
           //Since we are searching by id, we should only receive one result
           // -> Ignore others
@@ -73,10 +80,17 @@ export class PlatformDetails {
         });
         this.platformService.getDepartures(this.platformId(), this.debouncedDuration()).subscribe(departures => {
           this.departureData = departures;
+          this.departuresLoading.set(false);
         });
-        this.platformService.getArrivals(this.platformId(), this.debouncedDuration()).subscribe(arrivals => {
-          this.arrivalData = arrivals;
+        console.log("before timeout")
+        new Promise(resolve => setTimeout(resolve, 5000)).then(() => {
+          console.log("after timeout");
+          this.platformService.getArrivals(this.platformId(), this.debouncedDuration()).subscribe(arrivals => {
+            this.arrivalData = arrivals;
+            this.arrivalsLoading.set(false);
+          });
         });
+
       }
     })
   }
