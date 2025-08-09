@@ -11,8 +11,7 @@ const Platform = Object({
     type: Literal('station'),
     location: Location,
     name: String,
-    id: String,
-    test: String
+    id: String
 });
 
 export type PlatformType = Static<typeof Platform>;

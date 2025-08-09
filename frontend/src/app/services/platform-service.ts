@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core/primitives/di';
 import { catchError, map, of } from 'rxjs';
 import { PlatformValidator } from '../models/platform.model';
+import { ErrorDisplayService } from './error-display-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlatformService {  
   private http = inject(HttpClient);
+  private errorDisplayService = inject(ErrorDisplayService);
 
   searchForPlatformByName(name:string) {
     return this.http.get('http://localhost:3000/platforms/ByName/'+name).pipe(
@@ -26,8 +28,7 @@ export class PlatformService {
         return undefined;
       })),
       catchError(error => {
-        //TODO: Display Error
-        console.log(error);
+        this.errorDisplayService.displayError(error);        
 
         return of([]);
       })
