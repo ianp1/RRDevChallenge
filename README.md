@@ -54,6 +54,6 @@ Addtionally to the above improvements, some next ideas are:
 
 # API Documentation
 I used [bruno](https://github.com/usebruno/bruno) to provide a test interface for the backend API.
-Open backend/bruno as collection in the bruno ui and make sure to allow developer access, since i provided convenience scripts to create timestamps.
+Open `backend/bruno` as collection in the bruno ui and make sure to allow developer access, since i provided convenience scripts to create timestamps.
 
 You should then be able to query all enpoints. You can adjust the request variables under the "Vars"-Tab within the request view.
