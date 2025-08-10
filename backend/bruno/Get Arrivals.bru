@@ -1,0 +1,33 @@
+meta {
+  name: Get Arrivals
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:3000/platforms/{{PlatformId}}/Arrivals?startTime={{startTimestamp}}&duration={{duration}}
+  body: none
+  auth: none
+}
+
+params:query {
+  startTime: {{startTimestamp}}
+  duration: {{duration}}
+}
+
+vars:pre-request {
+  PlatformId: 8000237
+  duration: 720
+  startTime: 8.10.2025 02:23
+  ~startTimestamp: 1754785260
+}
+
+script:pre-request {
+  startTime = bru.getRequestVar("startTime");
+  if (startTime && startTime !== '') {
+    startTimeDate = new Date(bru.getRequestVar("startTime"));
+    
+    bru.setVar("startTimestamp",Math.floor(startTimeDate.getTime() / 1000.0));  
+  }
+  
+}

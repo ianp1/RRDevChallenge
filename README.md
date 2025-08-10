@@ -25,7 +25,6 @@ Frontend is reachable via port `4200`, backend via `3000`.
 
 
 # Considerations and Limitations
-
 There are some limitations in this example. I want to discuss them here and provide insight in how to improve:
 
 ## Rate limits
@@ -47,10 +46,14 @@ I did not implement DI in backend yet. This would be useful for testing and to i
 Due to time constraints i have not implemented any tests. In a real world scenario this would be a must.
 
 # Next Steps
-
 Addtionally to the above improvements, some next ideas are:
 
 - Browse the train lines of outgoing and incoming trains, with the option to inspect the other stations of the lines, too
 - Make the start date for arrival / departure search adjustable as well -> This is already implemented, only a date input element is missing
 - Add pagination to results
 
+# API Documentation
+I used [bruno](https://github.com/usebruno/bruno) to provide a test interface for the backend API.
+Open backend/bruno as collection in the bruno ui and make sure to allow developer access, since i provided convenience scripts to create timestamps.
+
+You should then be able to query all enpoints. You can adjust the request variables under the "Vars"-Tab within the request view.

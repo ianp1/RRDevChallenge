@@ -1,0 +1,15 @@
+meta {
+  name: Search Platforms By Name
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:3000/platforms/ByName/{{SearchText}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  SearchText: Lübeck
+}
